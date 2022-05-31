@@ -1,25 +1,22 @@
 package com.example.instabugtask.view.ui
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.instabugtask.R
 import com.example.instabugtask.databinding.ActivityNetworkBinding
-import com.example.instabugtask.model.HeaderRequest
-import com.example.instabugtask.utils.HTTPCallback
-import com.example.instabugtask.utils.HTTPRequest
+import com.example.instabugtask.data.model.HeaderRequest
+import com.example.instabugtask.utils.performCall
+import java.util.concurrent.Executors
 
 
 class NetworkActivity : AppCompatActivity() {
@@ -29,11 +26,8 @@ class NetworkActivity : AppCompatActivity() {
     private var headerRequestList = ArrayList<HeaderRequest>()
     private lateinit var mError: String
     private lateinit var mOutput: String
-
     private lateinit var mResponseCode: String
-
     private lateinit var mHeaders: String
-
     private lateinit var mQueryBody: String
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -46,6 +40,8 @@ class NetworkActivity : AppCompatActivity() {
         mResponseCode = ""
         mOutput = ""
         mError = ""
+
+
         if (isOnline(this)) {
             drawView(isOnline(this))
 
@@ -57,61 +53,41 @@ class NetworkActivity : AppCompatActivity() {
                     if (binding.url.text.isEmpty()) {
                         Toast.makeText(this, "please, enter a URL", Toast.LENGTH_SHORT).show()
                     } else {
-                        val requestHttp =
-                            HTTPRequest(
-                                binding.url.text.toString(),
-                                postDataParams = headerRequestList,
-                                asyncResponse = object :
-                                    HTTPCallback {
-                                    override fun processFinish(
-                                        output: String,
-                                        responseCode: Int,
-                                        queryBody: String,
-                                        headers: String
-                                    ) {
-                                        binding.llError.visibility = View.GONE
-                                        binding.tvResponseCode.setTextColor(getColor(R.color.teal_200))
-
-                                        mOutput = output
-                                        mResponseCode = responseCode.toString()
-                                        mHeaders = headers
-                                        mQueryBody = queryBody
-
-                                        binding.tvResponseBody.text = mOutput
-                                        binding.tvHeaders.text = mHeaders
-                                        binding.tvResponseCode.text = mResponseCode
-                                        binding.tvQueryAndBodyRequest.text = mQueryBody
-                                        binding.tvError.text = mError
-
-                                    }
-
-                                    @SuppressLint("ResourceAsColor")
-                                    override fun processFailed(
-                                        output: String,
-                                        responseCode: Int,
-                                        queryBody: String,
-                                        headers: String,
-                                        error: String
-                                    ) {
-                                        binding.llError.visibility = View.VISIBLE
-                                        binding.tvResponseCode.setTextColor(getColor(R.color.red))
-                                        mOutput = output
-                                        mResponseCode = responseCode.toString()
-                                        mHeaders = headers
-                                        mQueryBody = queryBody
-                                        mError = error
-
-                                        binding.tvResponseBody.text = mOutput
-                                        binding.tvHeaders.text = mHeaders
-                                        binding.tvResponseCode.text = mResponseCode
-                                        binding.tvQueryAndBodyRequest.text = mQueryBody
-                                        binding.tvError.text = mError
-
-                                    }
-                                },
-                                requestType = "POST"
+                        Executors.newSingleThreadExecutor().execute {
+                            val responseData = performCall(
+                                requestURL = binding.url.text.toString(),
+                                requestType = "POST",
+                                headerRequestList
                             )
-                        requestHttp.execute()
+                            mOutput = responseData.output
+                            mResponseCode = responseData.responseCode
+                            mHeaders = responseData.headers
+                            mQueryBody = responseData.queryBody
+                            mError = responseData.error
+                            runOnUiThread {
+
+                                if (responseData.responseCode.toInt() == 200) {
+                                    binding.llError.visibility = View.GONE
+                                    binding.tvResponseCode.setTextColor(getColor(R.color.teal_200))
+                                    binding.tvResponseBody.text = mOutput
+                                    binding.tvHeaders.text = mHeaders
+                                    binding.tvResponseCode.text = mResponseCode
+                                    binding.tvQueryAndBodyRequest.text = mQueryBody
+                                    binding.tvError.text = mError
+
+                                } else {
+                                    binding.llError.visibility = View.VISIBLE
+                                    binding.tvResponseCode.setTextColor(getColor(R.color.red))
+                                    binding.tvResponseBody.text = mOutput
+                                    binding.tvHeaders.text = mHeaders
+                                    binding.tvResponseCode.text = mResponseCode
+                                    binding.tvQueryAndBodyRequest.text = mQueryBody
+                                    binding.tvError.text = mError
+                                }
+                            }
+                        }
+
+
                     }
                 } catch (e: Exception) {
                     drawView(isOnline(this))
@@ -238,8 +214,6 @@ class NetworkActivity : AppCompatActivity() {
             binding.llNoInternet.visibility = View.VISIBLE
         }
     }
-
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString("mOutput", mOutput)
