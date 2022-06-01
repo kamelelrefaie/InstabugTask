@@ -1,7 +1,7 @@
 
 # Instabug Task
 
-This app helps backend developers to test their API.
+This app helps backend developers to test their APIs.
 
 
 ## Components Used
