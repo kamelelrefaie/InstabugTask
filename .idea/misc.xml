@@ -3,15 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/PC/AndroidStudioProjects/InstabugTask/app/src/main/res/layout/activity_cached_network.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/InstabugTask/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/InstabugTask/app/src/main/res/layout/activity_network.xml" value="0.25" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/InstabugTask/app/src/main/res/layout/item_add.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/PC/AndroidStudioProjects/InstabugTask/app/src/main/res/layout/item_rv.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/InstabugTask/app/src/main/res/layout/test_layout.xml" value="0.33" />
         <entry key="..\:/Users/PC/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/activity_list_item.xml" value="0.18802083333333333" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

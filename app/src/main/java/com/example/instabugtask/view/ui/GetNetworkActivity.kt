@@ -13,9 +13,12 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.instabugtask.R
-import com.example.instabugtask.databinding.ActivityNetworkBinding
+import com.example.instabugtask.data.local.DBHelper
 import com.example.instabugtask.data.model.HeaderRequest
+import com.example.instabugtask.data.model.ResponseData
+import com.example.instabugtask.databinding.ActivityNetworkBinding
 import com.example.instabugtask.utils.performCall
+import java.net.URL
 import java.util.concurrent.Executors
 
 
@@ -29,6 +32,7 @@ class GetNetworkActivity : AppCompatActivity() {
     private lateinit var mResponseCode: String
     private lateinit var mHeaders: String
     private lateinit var mQueryBody: String
+    private lateinit var dbHelper: DBHelper
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +44,7 @@ class GetNetworkActivity : AppCompatActivity() {
         mError = ""
         binding = ActivityNetworkBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        dbHelper=DBHelper(this, factory = null)
         binding.tvRequestName.text = "GET Request"
         binding.buttonAdd.text = "Add Request Query"
         binding.tvBodyRequest.text = "Query Request:"
@@ -54,42 +59,10 @@ class GetNetworkActivity : AppCompatActivity() {
                 try {
                     if (binding.url.text.isEmpty()) {
                         Toast.makeText(this, "please, enter a URL", Toast.LENGTH_SHORT).show()
+                    }else if(!isUrlValid(binding.url.text.toString())){
+                        Toast.makeText(this, "please, enter a valid URL", Toast.LENGTH_SHORT).show()
                     } else {
-                        Executors.newSingleThreadExecutor().execute {
-                            val responseData = performCall(
-                                requestURL = binding.url.text.toString(),
-                                requestType = "GET",
-                                headerRequestList
-                            )
-                            mOutput = responseData.output
-                            mResponseCode = responseData.responseCode
-                            mHeaders = responseData.headers
-                            mQueryBody = responseData.queryBody
-                            mError = responseData.error
-                            runOnUiThread {
-
-                                if (responseData.responseCode.toInt() == 200) {
-                                    binding.llError.visibility = View.GONE
-                                    binding.tvResponseCode.setTextColor(getColor(R.color.teal_200))
-                                    binding.tvResponseBody.text = mOutput
-                                    binding.tvHeaders.text = mHeaders
-                                    binding.tvResponseCode.text = mResponseCode
-                                    binding.tvQueryAndBodyRequest.text = mQueryBody
-                                    binding.tvError.text = mError
-
-                                } else {
-                                    binding.llError.visibility = View.VISIBLE
-                                    binding.tvResponseCode.setTextColor(getColor(R.color.red))
-                                    binding.tvResponseBody.text = mOutput
-                                    binding.tvHeaders.text = mHeaders
-                                    binding.tvResponseCode.text = mResponseCode
-                                    binding.tvQueryAndBodyRequest.text = mQueryBody
-                                    binding.tvError.text = mError
-                                }
-                            }
-                        }
-
-
+                            performNetworkCall()
                     }
                 } catch (e: Exception) {
                     drawView(isOnline(this))
@@ -114,12 +87,78 @@ class GetNetworkActivity : AppCompatActivity() {
         binding.btnGoToRequest.setOnClickListener {
             startActivity(Intent(this, NetworkActivity().javaClass))
         }
+
+        binding.btnGoToCachedPage.setOnClickListener {
+            startActivity(Intent(this, CachedNetworkActivity().javaClass))
+        }
+
         // This addButton is used to add a new view
         // in the parent linear layout
         binding.buttonAdd.setOnClickListener {
             addNewView()
         }
 
+    }
+
+    //to perform network call
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun performNetworkCall() {
+        Executors.newSingleThreadExecutor().execute {
+            val responseData = performCall(
+                requestURL = binding.url.text.toString(),
+                requestType = "GET",
+                headerRequestList
+            )
+            assignDataToGlobalVariables(responseData)
+                runOnUiThread {
+                        if (responseData.responseCode.toInt() == 200) {
+                            binding.llError.visibility = View.GONE
+                            binding.tvResponseCode.setTextColor(getColor(R.color.teal_200))
+                            fillViews()
+                        } else {
+                            binding.llError.visibility = View.VISIBLE
+                            binding.tvResponseCode.setTextColor(getColor(R.color.red))
+                            fillViews()
+                        }
+                }
+            dbHelper.insertApiTableData(
+                mHeaders,
+                query_body = mQueryBody,
+                response_code = mResponseCode,
+                mOutput,
+                mError,
+                "GET",
+                binding.url.text.toString()
+            )
+        }
+
+    }
+
+    fun isUrlValid(url: String?): Boolean {
+        /* Try creating a valid URL */
+        return try {
+            URL(url).toURI()
+            true
+        } // If there was an Exception
+        // while creating URL object
+        catch (e: java.lang.Exception) {
+            false
+        }
+    }
+    private fun assignDataToGlobalVariables(responseData: ResponseData) {
+        mOutput = responseData.output
+        mResponseCode = responseData.responseCode
+        mHeaders = responseData.headers
+        mQueryBody = responseData.queryBody
+        mError = responseData.error
+    }
+
+    private fun fillViews() {
+        binding.tvResponseBody.text = mOutput
+        binding.tvHeaders.text = mHeaders
+        binding.tvResponseCode.text = mResponseCode
+        binding.tvQueryAndBodyRequest.text = mQueryBody
+        binding.tvError.text = mError
     }
 
     // This function is called after
@@ -225,12 +264,7 @@ class GetNetworkActivity : AppCompatActivity() {
         mQueryBody = savedInstanceState.getString("mQueryBody", "")
         mResponseCode = savedInstanceState.getString("mResponseCode", "")
 
-
-        binding.tvResponseBody.text = mOutput
-        binding.tvHeaders.text = mHeaders
-        binding.tvResponseCode.text = mResponseCode
-        binding.tvQueryAndBodyRequest.text = mQueryBody
-        binding.tvError.text = mError
+        fillViews()
 
     }
 
