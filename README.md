@@ -9,24 +9,23 @@ This app helps backend developers to test their API.
 
 ●Successful GET request with query parameters
 
-![App Screenshot](https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/GET%20Request.jpeg)
+<img src="https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/GET%20Request.jpeg" alt="drawing" width="200"/>
 
 ● Failed GET request with 500 error code
 
-![App Screenshot](https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/GET500.jpeg)
+<img src="https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/GET500.jpeg" alt="drawing" width="200"/>
 
 ● Successful POST request
 
-![App Screenshot](https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/PostRequest.jpeg)
+<img src="https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/PostRequest.jpeg" alt="drawing" width="200"/>
 
 ● Failed POST request with 404 error code
 
-![App Screenshot](https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/POST404.jpeg)
+<img src="https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/POST404.jpeg" alt="drawing" width="200"/>
 
 ● When app went to offline mode
 
-![App Screenshot](https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/OFFLINE.jpeg)
-
+<img src="https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/OFFLINE.jpeg" alt="drawing" width="200"/>
 
 
 
@@ -40,15 +39,15 @@ This app helps backend developers to test their API.
 
 ● Cached get Requests
 
-![App Screenshot](https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/GET%20Cached.jpeg)
+<img src="https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/GET%20Cached.jpeg" alt="drawing" width="200"/>
 
 ● Cached POST Requests
 
-![App Screenshot](https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/GET%20Request.jpeg)
+<img src="https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/GET%20Request.jpeg" alt="drawing" width="200"/>
 
 ● Handle screen rotation issues
 
-![App Screenshot](https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/OFFLINE.jpeg)
+<img src="https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/OFFLINE.jpeg" alt="drawing" width="200"/>
 
 
 
