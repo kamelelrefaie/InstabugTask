@@ -52,7 +52,7 @@ This app helps backend developers to test their APIs.
 
 ● Handle screen rotation issues
 
-<img src="https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/OFFLINE.jpeg" alt="drawing" width="200"/>
+<img src="https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/screen_rotation.jpeg" alt="drawing" width="400"/>
 
 
 
