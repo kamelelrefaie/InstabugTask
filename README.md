@@ -4,6 +4,11 @@
 This app helps backend developers to test their API.
 
 
+## Components Used
+- ExecutorService for async task
+- SaveInstanceState to handle screen rotations
+- SQLLite for caching
+
 
 ## Screenshots
 
@@ -43,7 +48,7 @@ This app helps backend developers to test their API.
 
 ● Cached POST Requests
 
-<img src="https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/GET%20Request.jpeg" alt="drawing" width="200"/>
+<img src="https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/POST%20Cashed.j" alt="drawing" width="200"/>
 
 ● Handle screen rotation issues
 
