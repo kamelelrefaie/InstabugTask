@@ -48,7 +48,7 @@ This app helps backend developers to test their APIs.
 
 ● Cached POST Requests
 
-<img src="https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/POST%20Cashed.j" alt="drawing" width="200"/>
+<img src="https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/POST%20Cashed.jpeg" alt="drawing" width="200"/>
 
 ● Handle screen rotation issues
 
