@@ -65,6 +65,6 @@ This app helps backend developers to test their APIs.
 
 
 ## Demo
+https://user-images.githubusercontent.com/52335429/171460202-6babe198-cb03-41cf-8462-258a2f00fa65.mp4
 
-https://github.com/kamelelrefaie/InstabugTask/blob/master/assests/demo.mp4
 
