@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.instabugtask.R
@@ -24,7 +25,7 @@ class CachedNetworkAdapter(private val activity: Activity) :
     }
 
     override fun onBindViewHolder(holder: CachedNetworkViewHolder, position: Int) {
-        if (holder.tvResponseCode.text.toString() != "200") {
+        if (apiEntityList[position].responseCode != "200") {
             holder.llError.visibility = View.VISIBLE
             holder.tvResponseCode.setTextColor(
                 ContextCompat.getColor(
